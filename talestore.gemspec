@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/talestore.rb",
+    "talestore.gemspec",
     "test/helper.rb",
     "test/test_talestore.rb"
   ]
