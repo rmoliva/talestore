@@ -41,6 +41,15 @@ task :simplecov do
   Rake::Task['test'].execute
 end
 
+task :environment do
+  DATABASE_ENV = ENV['DATABASE_ENV'] || 'development'
+  MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || 'db/migrate'
+  require File.join(File.dirname(__FILE__), 'lib', 'talestore.rb')
+  @config = YAML.load_file('config/databases.yml')[DATABASE_ENV]
+  ActiveRecord::Base.establish_connection @config
+  ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), 'log', 'development.log'))
+end
+
 task :default => :test
 
 require 'rdoc/task'
@@ -53,3 +62,30 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
+desc "Start IRB with all runtime dependencies loaded"
+task :console, [:script] => :environment do |t,args|
+  # TODO move to a command
+  dirs = ['ext', 'lib'].select { |dir| File.directory?(dir) }
+
+  original_load_path = $LOAD_PATH
+
+  cmd = if File.exist?('Gemfile')
+          require 'bundler'
+          Bundler.setup(:default)
+        end
+
+  # add the project code directories
+  $LOAD_PATH.unshift(*dirs)
+
+  # clear ARGV so IRB is not confused
+  ARGV.clear
+
+  require 'irb'
+
+  # set the optional script to run
+  IRB.conf[:SCRIPT] = args.script
+  IRB.start
+
+  # return the $LOAD_PATH to it's original state
+  $LOAD_PATH.reject! { |path| !(original_load_path.include?(path)) }
+end

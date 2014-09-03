@@ -1,3 +1,8 @@
+/log
+
+# No subir los datos de los ficheros
+/lib/tasks/tales
+
 # rcov generated
 coverage
 coverage.data
