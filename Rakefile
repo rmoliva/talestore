@@ -11,14 +11,17 @@ rescue Bundler::BundlerError => e
 end
 require 'rake'
 
+# Load tasks defined on lib/tasks folder
+Dir[File.join(File.dirname(__FILE__), "lib", "tasks", "**", "*.rake")].each { |f| import f }
+
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "talestore"
   gem.homepage = "http://github.com/rmoliva/talestore"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Summary pending"
+  gem.description = "Description pending"
   gem.email = "floyd303@gmail.com"
   gem.authors = ["Roberto M. Oliva"]
   # dependencies defined in Gemfile
@@ -49,3 +52,4 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+

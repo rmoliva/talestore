@@ -1,0 +1,7 @@
+development:
+  adapter: mysql2
+  username: root
+  password: charly
+  database: talestore_dev
+  host: localhost
+  encoding: utf8
