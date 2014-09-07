@@ -15,5 +15,10 @@ module Talestore
     # Scopes
 
 
+    def complete_name
+      "#{name} #{surname}"
+    end
+
+
   end   
 end
